@@ -61,20 +61,11 @@ const PList = function () {
 const todoForm = document.querySelector("#todoForm");
 const todoInput = document.querySelector("#todo");
 const todoUrgency = document.querySelector("#todoUrgency");
-const todoList = document.querySelector("#todoList");
-const todoPL = new PList();
 const todoListDiv = document.querySelector('#todoListDiv');
+const todoPL = new PList();
 
 todoForm.addEventListener('submit', addTodo);
-// todoList.addEventListener('click', removeTodo);
 todoListDiv.addEventListener('click', removeToDoItem);
-
-// add beginner information to the todoPL
-todoPL.add(['Do Homework', 1]);
-todoPL.add(['Do Test', 2]);
-todoPL.add(['Join VC', 3]);
-todoPL.add(['Watch neices', 1]);
-console.log(todoPL.print());
 
 
 function addTodo(e) {
@@ -82,33 +73,25 @@ function addTodo(e) {
     // const newToDoItem = createToDoItem(todoInput.value, todoUrgency.value);
     // todoList.append(newToDoItem);
 
-    // add the ToDo Item information to the Priority List
-    todoPL.add([todoInput.value, parseInt(todoUrgency.value)]);
-
-    // reset the input value
-    todoInput.value = '';
-
     // build the to do list for display, first check if the values being inserted don't already exist
-    if (!todoPL.exists([todoInput.value, parseInt(todoUrgency.value)])) {
-        buildToDoList();
+    const todoInpuValue = todoInput.value.trim();
+    const todoUrgencyValue = parseInt(todoUrgency.value);
+
+    if (!todoPL.exists([todoInpuValue, todoUrgencyValue])) {
+
+        // add the ToDo Item information to the Priority List
+        todoPL.add([todoInpuValue, todoUrgencyValue]);
+
+        // reset the input value
+        todoInput.value = '';
+
+        buildToDoListDiv(); // rebuild the todo list information based on priority
+    } else {
+        todoInput.value = '';
     }
 
     // console.log(todoPL.print());
 
-}
-
-function createToDoItem(value, urgency) {
-    const newLI = document.createElement('li');
-
-    urgency = (urgency == 1) ? 'High' : (urgency == 2) ? 'Medium' : 'Low';
-    newLI.append(document.createTextNode(`${value} ${urgency}`));
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.append(document.createTextNode('X'));
-    deleteBtn.classList.add('btn', 'delete');
-
-    newLI.append(deleteBtn);
-    return newLI;
 }
 
 function createToDoListItem(todoText, todoUrgency) {
@@ -150,54 +133,21 @@ function removeToDoItem(e) {
         if (confirm('Are you sure?')) {
             // get the listItemDiv we want to delete
             const listItemDiv = e.target.parentElement;
-            console.log(listItemDiv);
+            // console.log(listItemDiv);
 
             // // get the todo's text and item urgency
-            // const listItemDivChildren = listItemDiv.children;
-            // const itemText = listItemDivChildren[0].innerText;
-            // let itemPriority = listItemDivChildren[1].innerText;
-            // itemPriority = (itemPriority === 'High') ? 1 : (itemPriority === 'Medium') ? 2 : 3;
+            const listItemDivChildren = listItemDiv.children;
+            const itemText = listItemDivChildren[0].innerText;
+            let itemPriority = listItemDivChildren[1].innerText;
+            itemPriority = (itemPriority === 'High') ? 1 : (itemPriority === 'Medium') ? 2 : 3;
 
-            // // remove the listItemDiv from the todoListDiv
-            // todoListDiv.removeChild(listItemDiv);
+            // remove the listItemDiv from the todoListDiv
+            todoListDiv.removeChild(listItemDiv);
 
-            // // remove the todo information from the priority list
-            // todoPL.remove(itemText, itemPriority);
-
-        }
-    }
-}
-
-function removeTodo(e) {
-    if (e.target.classList.contains('delete')) {
-        if (confirm('Are you sure?')) {
-            const li = e.target.parentElement; // get the li we want to remove
-            const liText = li.textContent; // get its text content
-            // console.log(`liText ${liText}`);
-            const buttonText = li.firstElementChild.textContent; // get the button content
-            // console.log(`buttonText ${buttonText}`);
-            const liTextWithoutButtonText = liText.replace(buttonText, ''); // get the text content before the button content
-            // console.log(`liTextWithoutButtonText ${liTextWithoutButtonText}`);
-            const liTextParts = liTextWithoutButtonText.split(/(High|Medium|Low)/); // get the text content before the priority level
-            // console.log(liTextParts);
-            const todoText = liTextParts[0].trim(); // store the todo text 
-            const priority = liTextParts[1]; // store the priority text
-            const number = (priority === 'High') ? 1 : (priority === 'Medium') ? 2 : 3; // find the number associated with the priority level
-
-            // console.log(todoText, priority);
-            todoList.removeChild(li); // remove the li element
-            todoPL.remove(todoText, number);
+            // remove the todo information from the priority list
+            todoPL.remove(itemText, itemPriority);
             // console.log(todoPL.print());
         }
-    }
-}
-
-function buildToDoList() {
-    todoList.innerHTML = '';
-    const todoPList = todoPL.print();
-    for (let i = 0; i < todoPL.size(); i++) {
-        const newToDoItem = createToDoItem(todoPList[i][0], todoPList[i][1]);
-        todoList.append(newToDoItem);
     }
 }
 
@@ -209,8 +159,6 @@ function buildToDoListDiv() {
         todoListDiv.append(newToDoItem);
     }
 }
-
-buildToDoListDiv();
 
 // TEST
 // const myPL = new PList();
