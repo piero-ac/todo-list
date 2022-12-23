@@ -101,6 +101,41 @@ function createToDoItem(value, urgency) {
     return newLI;
 }
 
+function createToDoListItem(todoText, todoUrgency) {
+
+    // create the div holding the todo's information
+    const listItemDiv = document.createElement('div');
+    listItemDiv.classList.add('listItem');
+
+    // create the paragraph containing the todo's text
+    const itemText = document.createElement('p');
+    itemText.classList.add('itemText');
+    itemText.innerText = todoText;
+
+    // create the paragraph containing the todo's urgency
+    todoUrgency = (todoUrgency == 1) ? 'High' : (todoUrgency == 2) ? 'Medium' : 'Low';
+
+    const span = document.createElement('span');
+    span.classList.add('priorityBox');
+    span.innerText = todoUrgency;
+
+    const itemPriority = document.createElement('p');
+    itemPriority.classList.add('itemPriority', todoUrgency);
+
+    itemPriority.append(span);
+
+    // create the delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.append(document.createTextNode('X'));
+    deleteBtn.classList.add('delete');
+
+    // append the elements to do listItemDiv
+    listItemDiv.append(itemText, itemPriority, deleteBtn);
+
+    return listItemDiv;
+
+}
+
 function removeTodo(e) {
     if (e.target.classList.contains('delete')) {
         if (confirm('Are you sure?')) {
