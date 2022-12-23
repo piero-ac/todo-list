@@ -15,10 +15,9 @@
     </header>
     <main>
         <form id="todoForm">
-            <label> ToDo:
-                <input type="text" name="todo" id="todo" required>
+            <label>ToDo:
+                <input type="text" name="todo" id="todo" maxlength="25" required>
             </label>
-            <br>
             <label>Urgency:
                 <select name="todoUrgency" id="todoUrgency">
                     <option value="1">High</option>
@@ -26,12 +25,28 @@
                     <option value="3">Low</option>
                 </select>
             </label>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Add ToDo">
         </form>
     </main>
-    <section>
+    <section id="todoListSection">
         <h2>ToDo Items</h2>
-        <ul id="todoList"></ul>
+        <div id="todoListDiv">
+            <div class="listItem">
+                <p class="itemText">Do Homework</p>
+                <p class="itemPriority High"><span class="priorityBox">High</span></p>
+                <button class="delete">X</button>
+            </div>
+            <div class="listItem">
+                <p class="itemText">Do Test</p>
+                <p class="itemPriority Medium"><span class="priorityBox">Medium</span></p>
+                <button class="delete">X</button>
+            </div>
+            <div class="listItem">
+                <p class="itemText">Join VC</p>
+                <p class="itemPriority Low"><span class="priorityBox">Low</span></p>
+                <button class="delete">X</button>
+            </div>
+        </div>
     </section>
     <script src="app.js"></script>
 </body>
