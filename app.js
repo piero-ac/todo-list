@@ -63,9 +63,19 @@ const todoInput = document.querySelector("#todo");
 const todoUrgency = document.querySelector("#todoUrgency");
 const todoList = document.querySelector("#todoList");
 const todoPL = new PList();
+const todoListDiv = document.querySelector('#todoListDiv');
 
 todoForm.addEventListener('submit', addTodo);
-todoList.addEventListener('click', removeTodo);
+// todoList.addEventListener('click', removeTodo);
+todoListDiv.addEventListener('click', removeToDoItem);
+
+// add beginner information to the todoPL
+todoPL.add(['Do Homework', 1]);
+todoPL.add(['Do Test', 2]);
+todoPL.add(['Join VC', 3]);
+todoPL.add(['Watch neices', 1]);
+console.log(todoPL.print());
+
 
 function addTodo(e) {
     e.preventDefault();
@@ -133,7 +143,29 @@ function createToDoListItem(todoText, todoUrgency) {
     listItemDiv.append(itemText, itemPriority, deleteBtn);
 
     return listItemDiv;
+}
 
+function removeToDoItem(e) {
+    if (e.target.classList.contains('delete')) {
+        if (confirm('Are you sure?')) {
+            // get the listItemDiv we want to delete
+            const listItemDiv = e.target.parentElement;
+            console.log(listItemDiv);
+
+            // // get the todo's text and item urgency
+            // const listItemDivChildren = listItemDiv.children;
+            // const itemText = listItemDivChildren[0].innerText;
+            // let itemPriority = listItemDivChildren[1].innerText;
+            // itemPriority = (itemPriority === 'High') ? 1 : (itemPriority === 'Medium') ? 2 : 3;
+
+            // // remove the listItemDiv from the todoListDiv
+            // todoListDiv.removeChild(listItemDiv);
+
+            // // remove the todo information from the priority list
+            // todoPL.remove(itemText, itemPriority);
+
+        }
+    }
 }
 
 function removeTodo(e) {
@@ -168,6 +200,17 @@ function buildToDoList() {
         todoList.append(newToDoItem);
     }
 }
+
+function buildToDoListDiv() {
+    todoListDiv.innerHTML = '';
+    const todoPList = todoPL.print();
+    for (let i = 0; i < todoPList.length; i++) {
+        const newToDoItem = createToDoListItem(todoPList[i][0], todoPList[i][1]);
+        todoListDiv.append(newToDoItem);
+    }
+}
+
+buildToDoListDiv();
 
 // TEST
 // const myPL = new PList();
